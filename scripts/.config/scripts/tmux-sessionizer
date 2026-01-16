@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+if [[ $# -eq 1 ]]; then
+    selected=$1
+else
+    selected=$(find ~/ ~/Desktop/ ~/.config/ ~/projects/ ~/work/cu-nex/ ~/work/yoursphere/ ~/Desktop/typst/ -mindepth 1 -maxdepth 1 -type d | fzf)
+fi
+
+if [[ -z $selected ]]; then
+    exit 0
+fi
+
+selected_name=$(basename "$selected" | tr . _)
+tmux_running=$(pgrep tmux)
+
+make_window() {
+    local window_name=$1
+    local subpath=$2
+    local full_path="$selected/$subpath"
+
+    # Only create if the window doesn't exist yet
+    if ! tmux list-windows -t "$selected_name" | grep -q "$window_name"; then
+        tmux new-window -t "$selected_name" -n "$window_name" -c "$full_path"
+    fi
+}
+
+
+if ! tmux has-session -t=$selected_name 2> /dev/null; then
+    tmux new-session -ds "$selected_name" -c "$selected" -n "%"
+    
+    case $selected_name in
+        "quickattend-backend")
+            # tmux send-keys -t "$selected_name:%" "nvim ." Enter
+            make_window "docker"
+            tmux send-keys -t "$selected_name:docker" "docker-up" Enter
+            tmux select-window -t "$selected_name:%"
+            ;;
+        "tmp")
+            make_window "c-wtf" "c-cpp/learn"
+            ;;
+        *)
+            # Default for everything else: Open %
+            # tmux send-keys -t "$selected_name:%" "nvim ." Enter
+            ;;
+    esac
+fi
+
+if [[ -z $TMUX ]]; then
+    tmux attach-session -t "$selected_name"
+else
+    tmux switch-client -t "$selected_name"
+fi
