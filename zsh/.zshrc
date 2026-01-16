@@ -32,7 +32,8 @@ HIST_STAMPS="dd.mm.yyyy"
 plugins=(git)
 
 # ZSH_THEME="sunrise"
-ZSH_THEME="robbyrussell"
+# ZSH_THEME="robbyrussell"
+ZSH_THEME="robbyrussell-fullpath"
 # ZSH_THEME="af-magic"
 # ZSH_THEME="arrow"
 # ZSH_THEME="aphrodite/aphrodite"
@@ -57,6 +58,7 @@ export EDITOR="nvim"
 alias window="cd /mnt/c/Users/User"
 alias nvimcf="cd ~/.config/nvim && nvim"
 alias folder="explorer.exe"
+alias gitbasename='basename $(git config --get remote.origin.url) .git'
 
 # Linuxbrew
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
