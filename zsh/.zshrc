@@ -32,8 +32,8 @@ HIST_STAMPS="dd.mm.yyyy"
 plugins=(git)
 
 # ZSH_THEME="sunrise"
-# ZSH_THEME="robbyrussell"
-ZSH_THEME="robbyrussell-fullpath"
+ZSH_THEME="robbyrussell"
+# ZSH_THEME="robbyrussell-fullpath"
 # ZSH_THEME="af-magic"
 # ZSH_THEME="arrow"
 # ZSH_THEME="aphrodite/aphrodite"
