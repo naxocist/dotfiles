@@ -21,6 +21,9 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 
+# opencode
+export PATH=/home/naxocist/.opencode/bin:$PATH
+
 # OH MY ZSH
 export ZSH="$HOME/.oh-my-zsh"
 zstyle ':omz:update' mode reminder
@@ -31,25 +34,7 @@ HIST_STAMPS="dd.mm.yyyy"
 
 plugins=(git)
 
-# ZSH_THEME="sunrise"
 ZSH_THEME="robbyrussell"
-# ZSH_THEME="robbyrussell-fullpath"
-# ZSH_THEME="af-magic"
-# ZSH_THEME="arrow"
-# ZSH_THEME="aphrodite/aphrodite"
-
-SPACESHIP_PROMPT_ASYNC="false"
-SPACESHIP_CHAR_SYMBOL="> "
-SPACESHIP_GIT_BRANCH_COLOR="red"
-SPACESHIP_PROMPT_ORDER=(
-  dir
-  git
-  node
-  venv
-  line_sep
-  char
-)
-
 source "$ZSH/oh-my-zsh.sh"
 
 # GENERAL
@@ -77,7 +62,3 @@ eval "$(zoxide init zsh --cmd cd)"
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
-
-
-# opencode
-export PATH=/home/naxocist/.opencode/bin:$PATH
