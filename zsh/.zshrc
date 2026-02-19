@@ -40,6 +40,7 @@ source "$ZSH/oh-my-zsh.sh"
 # GENERAL
 export EDITOR="nvim"
 
+alias activatepy="source .venv/bin/activate"
 alias window="cd /mnt/c/Users/User"
 alias nvimcf="cd ~/.config/nvim && nvim"
 alias folder="explorer.exe"
