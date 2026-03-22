@@ -32,7 +32,6 @@ if ! tmux has-session -t=$selected_name 2> /dev/null; then
         "quickattend-backend")
             # tmux send-keys -t "$selected_name:%" "nvim ." Enter
             make_window "docker"
-            tmux send-keys -t "$selected_name:docker" "docker-up" Enter
             tmux select-window -t "$selected_name:%"
             ;;
         "tmp")

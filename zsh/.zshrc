@@ -34,7 +34,10 @@ HIST_STAMPS="dd.mm.yyyy"
 
 plugins=(git)
 
-ZSH_THEME="robbyrussell"
+# ZSH_THEME="robbyrussell"
+# ZSH_THEME="muse"
+# ZSH_THEME="avit"
+ZSH_THEME="juanghurtado"
 source "$ZSH/oh-my-zsh.sh"
 
 # GENERAL
