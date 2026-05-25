@@ -34,6 +34,18 @@ if ! tmux has-session -t=$selected_name 2> /dev/null; then
             make_window "docker"
             tmux select-window -t "$selected_name:%"
             ;;
+        "bpk")
+            make_window "infra" "infra"
+            make_window "backend" "backend_server"
+            make_window "staff" "frontend"
+            make_window "research" "frontend-researcher"
+
+            tmux select-window -t "$selected_name:infra"
+
+            tmux send-keys -t "$selected_name:backend" "~/work/bpk/logs.sh b" Enter
+            tmux send-keys -t "$selected_name:staff" "~/work/bpk/logs.sh fs" Enter
+            tmux send-keys -t "$selected_name:research" "~/work/bpk/logs.sh fr" Enter
+            ;;
         "tmp")
             make_window "c-wtf" "c-cpp/learn"
             ;;

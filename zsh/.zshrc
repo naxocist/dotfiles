@@ -34,10 +34,10 @@ HIST_STAMPS="dd.mm.yyyy"
 
 plugins=(git)
 
-# ZSH_THEME="robbyrussell"
+ZSH_THEME="robbyrussell"
 # ZSH_THEME="muse"
+# ZSH_THEME="juanghurtado"
 # ZSH_THEME="avit"
-ZSH_THEME="juanghurtado"
 source "$ZSH/oh-my-zsh.sh"
 
 # GENERAL
@@ -46,23 +46,19 @@ export EDITOR="nvim"
 alias activatepy="source .venv/bin/activate"
 alias window="cd /mnt/c/Users/User"
 alias nvimcf="cd ~/.config/nvim && nvim"
-alias folder="explorer.exe"
+alias folder="/mnt/c/Windows/explorer.exe"
 alias gitbasename='basename $(git config --get remote.origin.url) .git'
 
 # Linuxbrew
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
-# Fast Node Manager
-FNM_PATH="/home/naxocist/.local/share/fnm"
-if [ -d "$FNM_PATH" ]; then
-  export PATH="$FNM_PATH:$PATH"
-  eval "`fnm env`"
-fi
-
 # zoxide
 eval "$(zoxide init zsh --cmd cd)"
 
+eval "$(/home/naxocist/.local/bin/mise activate zsh)"
 
-#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="$HOME/.sdkman"
-[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+# Start keychain and point it to your specific Ed25519 key
+/usr/bin/keychain --nogui $HOME/.ssh/id_ed25519
+
+# Source the agent environment variables
+[[ -f $HOME/.keychain/$HOST-sh ]] && source $HOME/.keychain/$HOST-sh
