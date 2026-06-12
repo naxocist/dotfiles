@@ -63,7 +63,8 @@ if [ -f "$_SSH_ENV" ]; then
     source "$_SSH_ENV" > /dev/null
 fi
 if ! ssh-add -l &>/dev/null; then
-    eval "$(ssh-agent -s)" > "$_SSH_ENV"
+    ssh-agent -s > "$_SSH_ENV"
+    source "$_SSH_ENV" > /dev/null
     ssh-add ~/.ssh/id_ed25519
 fi
 unset _SSH_ENV
