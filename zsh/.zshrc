@@ -56,9 +56,3 @@ eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 eval "$(zoxide init zsh --cmd cd)"
 
 eval "$(/home/naxocist/.local/bin/mise activate zsh)"
-
-# Start keychain and point it to your specific Ed25519 key
-/usr/bin/keychain --nogui $HOME/.ssh/id_ed25519
-
-# Source the agent environment variables
-[[ -f $HOME/.keychain/$HOST-sh ]] && source $HOME/.keychain/$HOST-sh
