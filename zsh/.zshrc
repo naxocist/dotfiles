@@ -56,3 +56,14 @@ eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 eval "$(zoxide init zsh --cmd cd)"
 
 eval "$(/home/naxocist/.local/bin/mise activate zsh)"
+
+# SSH Agent - persist across WSL sessions
+_SSH_ENV="$HOME/.ssh/agent.env"
+if [ -f "$_SSH_ENV" ]; then
+    source "$_SSH_ENV" > /dev/null
+fi
+if ! ssh-add -l &>/dev/null; then
+    eval "$(ssh-agent -s)" > "$_SSH_ENV"
+    ssh-add ~/.ssh/id_ed25519
+fi
+unset _SSH_ENV
