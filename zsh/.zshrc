@@ -32,16 +32,50 @@ COMPLETION_WAITING_DOTS="true"
 DISABLE_UNTRACKED_FILES_DIRTY="true"
 HIST_STAMPS="dd.mm.yyyy"
 
-plugins=(git)
+plugins=(
+  # Version control
+  git
+
+  # Package managers & runtimes
+  brew
+  node
+  npm
+  golang
+  rust
+  python
+  pip
+  uv
+  deno
+
+  # Containers & cloud
+  docker
+  docker-compose
+  kubectl
+  gcloud
+
+  # Fuzzy finder
+  fzf
+
+  # Quality of life
+  sudo
+  colored-man-pages
+  extract
+  history-substring-search
+)
 
 ZSH_THEME="robbyrussell"
-# ZSH_THEME="muse"
-# ZSH_THEME="juanghurtado"
-# ZSH_THEME="avit"
 source "$ZSH/oh-my-zsh.sh"
+
+# history-substring-search key bindings (up/down arrow)
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
 
 # GENERAL
 export EDITOR="nvim"
+
+# prevent resolving to windows binaries
+alias python=python3
+alias pip=pip3
 
 alias activatepy="source .venv/bin/activate"
 alias window="cd /mnt/c/Users/User"
