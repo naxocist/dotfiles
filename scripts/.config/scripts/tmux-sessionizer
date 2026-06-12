@@ -1,36 +1,69 @@
 #!/usr/bin/env bash
+CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/tmux-sessionizer"
+CONFIG_FILE="$CONFIG_DIR/tmux-sessionizer.conf"
+
+if [[ -f "$CONFIG_FILE" ]]; then
+    source "$CONFIG_FILE"
+fi
+
+[[ -n "$TS_SEARCH_PATHS" ]] || TS_SEARCH_PATHS=(~/ ~/Desktop ~/projects)
+
+find_dirs() {
+    if [[ -n "${TMUX}" ]]; then
+        current_session=$(tmux display-message -p '#S')
+        tmux list-sessions -F "[TMUX] #{session_name}" 2>/dev/null | grep -vFx "[TMUX] $current_session"
+    else
+        tmux list-sessions -F "[TMUX] #{session_name}" 2>/dev/null
+    fi
+
+    for entry in "${TS_SEARCH_PATHS[@]}"; do
+        if [[ "$entry" =~ ^([^:]+):([0-9]+)$ ]]; then
+            path="${BASH_REMATCH[1]}"
+            depth="${BASH_REMATCH[2]}"
+        else
+            path="$entry"
+            depth="${TS_MAX_DEPTH:-1}"
+        fi
+        [[ -d "$path" ]] && find "$path" -mindepth 1 -maxdepth "$depth" -path '*/.git' -prune -o -type d -print
+    done
+}
 
 if [[ $# -eq 1 ]]; then
     selected=$1
 else
-    selected=$(find -L ~/ ~/Desktop/ ~/.config/ ~/projects/ ~/work/cu-nex/ ~/work/yoursphere/ ~/Desktop/typst/ -mindepth 1 -maxdepth 1 -type d | fzf)
+    selected=$(find_dirs | fzf)
 fi
 
 if [[ -z $selected ]]; then
     exit 0
 fi
 
+if [[ "$selected" =~ ^\[TMUX\]\ (.+)$ ]]; then
+    selected="${BASH_REMATCH[1]}"
+    if [[ -z $TMUX ]]; then
+        tmux attach-session -t "$selected"
+    else
+        tmux switch-client -t "$selected"
+    fi
+    exit 0
+fi
+
 selected_name=$(basename "$selected" | tr . _)
-tmux_running=$(pgrep tmux)
 
 make_window() {
     local window_name=$1
     local subpath=$2
     local full_path="$selected/$subpath"
-
-    # Only create if the window doesn't exist yet
     if ! tmux list-windows -t "$selected_name" | grep -q "$window_name"; then
         tmux new-window -t "$selected_name" -n "$window_name" -c "$full_path"
     fi
 }
 
-
-if ! tmux has-session -t=$selected_name 2> /dev/null; then
+if ! tmux has-session -t=$selected_name 2>/dev/null; then
     tmux new-session -ds "$selected_name" -c "$selected" -n "%"
-    
+
     case $selected_name in
         "quickattend-backend")
-            # tmux send-keys -t "$selected_name:%" "nvim ." Enter
             make_window "docker"
             tmux select-window -t "$selected_name:%"
             ;;
@@ -39,19 +72,13 @@ if ! tmux has-session -t=$selected_name 2> /dev/null; then
             make_window "backend" "backend_server"
             make_window "staff" "frontend"
             make_window "research" "frontend-researcher"
-
             tmux select-window -t "$selected_name:infra"
-
             tmux send-keys -t "$selected_name:backend" "~/work/bpk/logs.sh b" Enter
             tmux send-keys -t "$selected_name:staff" "~/work/bpk/logs.sh fs" Enter
             tmux send-keys -t "$selected_name:research" "~/work/bpk/logs.sh fr" Enter
             ;;
         "tmp")
             make_window "c-wtf" "c-cpp/learn"
-            ;;
-        *)
-            # Default for everything else: Open %
-            # tmux send-keys -t "$selected_name:%" "nvim ." Enter
             ;;
     esac
 fi
