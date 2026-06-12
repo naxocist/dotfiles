@@ -97,4 +97,5 @@ git pull
 cd ~/dotfiles
 git add nvim/.config/nvim
 git commit -m "update nvim submodule"
+
 ```
