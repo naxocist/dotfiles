@@ -63,7 +63,8 @@ plugins=(
   history-substring-search
 )
 
-ZSH_THEME="robbyrussell"
+# ZSH_THEME="robbyrussell"
+ZSH_THEME=""
 source "$ZSH/oh-my-zsh.sh"
 
 # history-substring-search key bindings (up/down arrow)
@@ -72,6 +73,7 @@ bindkey '^[[B' history-substring-search-down
 
 # GENERAL
 export EDITOR="nvim"
+export SUDO_EDITOR="nvim"
 
 # prevent resolving to windows binaries
 alias python=python3
@@ -103,3 +105,15 @@ if ! ssh-add -l &>/dev/null; then
 fi
 unset _SSH_ENV
 setopt NO_NOMATCH
+
+# altimate
+export PATH=/home/naxocist/.altimate/bin:$PATH
+
+autoload -U promptinit; promptinit
+prompt pure
+
+# Added by dbt installer
+export PATH="$PATH:/home/naxocist/.local/bin"
+
+# dbt aliases
+alias dbtf=/home/naxocist/.local/bin/dbt
