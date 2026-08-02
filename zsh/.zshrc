@@ -21,8 +21,6 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 
-# opencode
-export PATH=/home/naxocist/.opencode/bin:$PATH
 
 # OH MY ZSH
 export ZSH="$HOME/.oh-my-zsh"
